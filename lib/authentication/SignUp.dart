@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables;, deprecated_member_use, unused_local_variable
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_project/main.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget {
@@ -54,8 +53,8 @@ class _SignUpState extends State<SignUp> {
                           .createUserWithEmailAndPassword(
                               email: _emailController1.text,
                               password: _passwordController1.text);
+                              Navigator.of(context).popUntil((route) => route.isFirst);
                       setState(() {});
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
                     },
                     child: Text(
                       'Sign Up',

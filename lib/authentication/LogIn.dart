@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables;, deprecated_member_use, unused_local_variable, empty_catches, empty_statements
+// ignore_for_file: prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables;, deprecated_member_use, unused_local_variable, empty_catches, empty_statements, unused_import, unused_import, duplicate_ignore
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:first_project/todoSection/Home.dart';
+import 'package:first_project/authentication/SignUp.dart';
 import 'package:flutter/material.dart';
-import 'package:first_project/SignUp.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({Key? key}) : super(key: key);
@@ -13,8 +14,9 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   final _emailController1 = TextEditingController();
   final _passwordController1 = TextEditingController();
-  String? errorMessage = '';
-  
+
+  String errorMessage = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,9 +39,6 @@ class _LogInState extends State<LogIn> {
                 ),
                 controller: _emailController1,
               ),
-              Center(
-                child: Text(errorMessage!, style: TextStyle(color: Colors.red)),
-              ),
               const SizedBox(height: 12),
               TextField(
                 decoration: InputDecoration(
@@ -49,7 +48,13 @@ class _LogInState extends State<LogIn> {
                 ),
                 controller: _passwordController1,
               ),
-              const SizedBox(height: 10),
+              SizedBox(
+                height: 15,
+                child: Text(
+                  errorMessage,
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
               Row(
                 children: [
                   Text(
@@ -71,7 +76,7 @@ class _LogInState extends State<LogIn> {
                   ),
                 ],
               ),
-              const SizedBox(height: 25),
+              SizedBox(height: 25, child: Text('')),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 15),
                 child: ElevatedButton(
@@ -80,9 +85,26 @@ class _LogInState extends State<LogIn> {
                         await FirebaseAuth.instance.signInWithEmailAndPassword(
                             email: _emailController1.text,
                             password: _passwordController1.text);
-                        errorMessage = '';
+                            Navigator.pop(context);
                       } on FirebaseAuthException catch (e) {
-                        errorMessage = e.message!;
+                        var errorMessage = '';
+                        switch (e.code) {
+                          case 'invalid-email':
+                            errorMessage = 'The email you submitted is wrong';
+                            break;
+                          case 'user-disabled':
+                            errorMessage =
+                                'The user you tried to sign into is disabled';
+                            break;
+                          case 'user-not-found':
+                            errorMessage =
+                                'The user you tried to sign into is not found';
+                            break;
+                          case 'wrong-password':
+                            errorMessage =
+                                'The password you submitted is wrong';
+                            break;
+                        }
                       }
                       ;
                       setState(() {});
