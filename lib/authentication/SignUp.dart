@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables;, deprecated_member_use, unused_local_variable
+// ignore_for_file: prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables;, deprecated_member_use, unused_local_variable, dead_code
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +14,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     final _emailController1 = TextEditingController();
     final _passwordController1 = TextEditingController();
+    final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
     return Scaffold(
       backgroundColor: Colors.grey[350],
@@ -27,23 +28,9 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             children: [
               const SizedBox(height: 86),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  labelText: 'Email',
-                ),
-                controller: _emailController1,
-              ),
+              textField('Email', _emailController1),
               const SizedBox(height: 16),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  labelText: 'Password',
-                ),
-                controller: _passwordController1,
-              ),
+              textField('Password', _passwordController1),
               const SizedBox(height: 25),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 15),
@@ -53,7 +40,7 @@ class _SignUpState extends State<SignUp> {
                           .createUserWithEmailAndPassword(
                               email: _emailController1.text,
                               password: _passwordController1.text);
-                              Navigator.of(context).popUntil((route) => route.isFirst);
+                      Navigator.of(context).popUntil((route) => route.isFirst);
                       setState(() {});
                     },
                     child: Text(
@@ -68,6 +55,16 @@ class _SignUpState extends State<SignUp> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget textField(String labelValue, var controllerValue) {
+    return TextField(
+      decoration: InputDecoration(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+        labelText: labelValue,
+      ),
+      controller: controllerValue,
     );
   }
 }

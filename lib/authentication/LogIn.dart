@@ -31,23 +31,9 @@ class _LogInState extends State<LogIn> {
           child: Column(
             children: [
               const SizedBox(height: 86),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  labelText: 'Email',
-                ),
-                controller: _emailController1,
-              ),
+              textField('Email', _emailController1),
               const SizedBox(height: 12),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  labelText: 'Password',
-                ),
-                controller: _passwordController1,
-              ),
+              textField('Password', _passwordController1),
               SizedBox(
                 height: 15,
                 child: Text(
@@ -121,6 +107,15 @@ class _LogInState extends State<LogIn> {
           ),
         ),
       ),
+    );
+  }
+    Widget textField(String labelValue, var controllerValue) {
+    return TextField(
+      decoration: InputDecoration(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+        labelText: labelValue,
+      ),
+      controller: controllerValue,
     );
   }
 }

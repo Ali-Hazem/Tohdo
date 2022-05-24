@@ -17,14 +17,20 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Todo-App'),
+        backgroundColor: Colors.blueGrey[800],
         actions: [
           FlatButton.icon(
-            onPressed: () async{
+            onPressed: () async {
               setState(() {});
-              Navigator.push(context, MaterialPageRoute(builder: ((context) => const LogIn())));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => const LogIn())));
             },
-            icon: const Icon(Icons.person),
-            label: const Text('Sign In'),)
+            icon: const Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            label: const Text('Sign In', style: TextStyle(color: Colors.white)),
+          )
         ],
       ),
     );
