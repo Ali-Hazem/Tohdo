@@ -62,7 +62,7 @@ class _LogInState extends State<LogIn> {
                   ),
                 ],
               ),
-              SizedBox(height: 25, child: Text('')),
+              SizedBox(height: 25),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 15),
                 child: ElevatedButton(
