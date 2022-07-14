@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\flurrer\\first_project\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-gu\\values-gu.xml",
+            "outputFile": "D:\\flurrer\\first_project\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-gu\\values-gu.xml",
             "map": [
                 {
                     "source": "C:\\Users\\hazem\\.gradle\\caches\\transforms-2\\files-2.1\\77d4c3d51816ff6260deae7d0dcd3a18\\jetified-play-services-basement-18.0.0\\res\\values-gu\\values.xml",

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\flurrer\\first_project\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-as\\values-as.xml",
+            "outputFile": "D:\\flurrer\\first_project\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-as\\values-as.xml",
             "map": [
                 {
                     "source": "C:\\Users\\hazem\\.gradle\\caches\\transforms-2\\files-2.1\\e45340d464f7f3aff0f2e48db64a1d02\\core-1.6.0\\res\\values-as\\values-as.xml",

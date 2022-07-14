@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\flurrer\\first_project\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "D:\\flurrer\\first_project\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
                     "source": "C:\\Users\\hazem\\.gradle\\caches\\transforms-2\\files-2.1\\0f47e5e6df552b3f7276790899da82eb\\coordinatorlayout-1.0.0\\res\\values\\values.xml",
@@ -37,23 +37,6 @@
                         "startOffsets": "722,780,846,909,1774,1845",
                         "endColumns": "57,65,62,61,70,71",
                         "endOffsets": "775,841,904,966,1840,1912"
-                    }
-                },
-                {
-                    "source": "C:\\flurrer\\first_project\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "55,199,281,385,494,614,719",
-                        "endColumns": "143,81,103,108,119,104,81",
-                        "endOffsets": "194,276,380,489,609,714,796"
-                    },
-                    "to": {
-                        "startLines": "126,127,128,129,130,131,132",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "8966,9110,9192,9296,9405,9525,9630",
-                        "endColumns": "143,81,103,108,119,104,81",
-                        "endOffsets": "9105,9187,9291,9400,9520,9625,9707"
                     }
                 },
                 {
@@ -95,22 +78,20 @@
                     }
                 },
                 {
-                    "source": "C:\\flurrer\\first_project\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "D:\\flurrer\\first_project\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
                     "from": {
-                        "startLines": "3,14",
-                        "startColumns": "4,4",
-                        "startOffsets": "176,830",
-                        "endLines": "7,16",
-                        "endColumns": "12,12",
-                        "endOffsets": "472,996"
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,199,281,385,494,614,719",
+                        "endColumns": "143,81,103,108,119,104,81",
+                        "endOffsets": "194,276,380,489,609,714,796"
                     },
                     "to": {
-                        "startLines": "134,139",
-                        "startColumns": "4,4",
-                        "startOffsets": "9783,10080",
-                        "endLines": "138,141",
-                        "endColumns": "12,12",
-                        "endOffsets": "10075,10244"
+                        "startLines": "126,127,128,129,130,131,132",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "8966,9110,9192,9296,9405,9525,9630",
+                        "endColumns": "143,81,103,108,119,104,81",
+                        "endOffsets": "9105,9187,9291,9400,9520,9625,9707"
                     }
                 },
                 {
@@ -147,6 +128,25 @@
                         "startOffsets": "6495,7673",
                         "endColumns": "67,166",
                         "endOffsets": "6558,7835"
+                    }
+                },
+                {
+                    "source": "D:\\flurrer\\first_project\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "from": {
+                        "startLines": "3,14",
+                        "startColumns": "4,4",
+                        "startOffsets": "176,830",
+                        "endLines": "7,16",
+                        "endColumns": "12,12",
+                        "endOffsets": "472,996"
+                    },
+                    "to": {
+                        "startLines": "134,139",
+                        "startColumns": "4,4",
+                        "startOffsets": "9783,10080",
+                        "endLines": "138,141",
+                        "endColumns": "12,12",
+                        "endOffsets": "10075,10244"
                     }
                 }
             ]

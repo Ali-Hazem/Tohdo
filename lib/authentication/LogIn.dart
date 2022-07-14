@@ -1,66 +1,97 @@
-// ignore_for_file: prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables;, deprecated_member_use, unused_local_variable, empty_catches, empty_statements, unused_import, unused_import, duplicate_ignore
+// ignore_for_file: prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables;, deprecated_member_use, unused_local_variable, empty_catches, empty_statements, unused_import, unused_import, duplicate_ignore, unused_field
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:first_project/global.dart';
 import 'package:first_project/todoSection/Home.dart';
-import 'package:first_project/authentication/SignUp.dart';
+import 'package:flutter/gestures.dart';
+// import 'package:first_project/authentication/signUp.dart';
 import 'package:flutter/material.dart';
+import 'SignUp.dart';
 
 class LogIn extends StatefulWidget {
-  const LogIn({Key? key}) : super(key: key);
+  const LogIn({Key? key, required this.onClickedSignUp}) : super(key: key);
+  final VoidCallback onClickedSignUp;
 
   @override
   State<LogIn> createState() => _LogInState();
 }
 
 class _LogInState extends State<LogIn> {
-  final _emailController1 = TextEditingController();
-  final _passwordController1 = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  String? errorMessage = '';
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
 
-  String errorMessage = '';
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[350],
+      backgroundColor: Colors.grey,
       appBar: AppBar(
-          title: Text('Sign In'),
-          centerTitle: true,
-          backgroundColor: Colors.blueGrey[800]),
+        title: Text('Sign In'),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 86),
-              textField('Email', _emailController1),
+              Padding(padding: EdgeInsets.symmetric(vertical: 20), child: flutterLogo,),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: authPageText,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  labelText: 'Email',
+                ),
+                controller: _emailController,
+                textInputAction: TextInputAction.next,
+              ),
               const SizedBox(height: 12),
-              textField('Password', _passwordController1),
+              TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  labelText: 'Password',
+                ),
+                textInputAction: TextInputAction.next,
+                controller: _passwordController,
+              ),
               SizedBox(
-                height: 15,
+                height: 19,
                 child: Text(
-                  errorMessage,
+                  errorMessage!,
                   style: TextStyle(color: Colors.red),
                 ),
               ),
-              Row(
-                children: [
-                  Text(
-                    "Don't have an account?",
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                  InkWell(
-                    child: Text(
-                      "  Sign Up",
-                      style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
-                    ),
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => SignUp()));
-                    },
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RichText(
+                    text: TextSpan(
+                        text: 'No account?  ',
+                        style: TextStyle(fontSize: 17, color: Colors.white),
+                        children: [
+                      TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = widget.onClickedSignUp,
+                          //tapGestureRecognizer calls onClickedSignUp
+
+                          text: 'Sign Up',
+                          style: TextStyle(
+                              fontSize: 17,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey[800])),
+                    ])),
               ),
               SizedBox(height: 25),
               Container(
@@ -69,33 +100,15 @@ class _LogInState extends State<LogIn> {
                     onPressed: () async {
                       try {
                         await FirebaseAuth.instance.signInWithEmailAndPassword(
-                            email: _emailController1.text,
-                            password: _passwordController1.text);
-                            Navigator.pop(context);
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text.trim());
                       } on FirebaseAuthException catch (e) {
-                        var errorMessage = '';
-                        switch (e.code) {
-                          case 'invalid-email':
-                            errorMessage = 'The email you submitted is wrong';
-                            break;
-                          case 'user-disabled':
-                            errorMessage =
-                                'The user you tried to sign into is disabled';
-                            break;
-                          case 'user-not-found':
-                            errorMessage =
-                                'The user you tried to sign into is not found';
-                            break;
-                          case 'wrong-password':
-                            errorMessage =
-                                'The password you submitted is wrong';
-                            break;
-                        }
+                        errorMessage = e.message;
                       }
                       ;
                       setState(() {});
                     },
-                    child: Text(
+                    child: const Text(
                       'Sign In',
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
@@ -107,15 +120,6 @@ class _LogInState extends State<LogIn> {
           ),
         ),
       ),
-    );
-  }
-    Widget textField(String labelValue, var controllerValue) {
-    return TextField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-        labelText: labelValue,
-      ),
-      controller: controllerValue,
     );
   }
 }
