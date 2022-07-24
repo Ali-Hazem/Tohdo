@@ -1,10 +1,5 @@
-// ignore_for_file: deprecated_member_use, prefer_const_literals_to_create_immutables, unused_import, file_names, unnecessary_null_comparison, unused_local_variable, prefer_typing_uninitialized_variables, prefer_const_constructors, unrelated_type_equality_checks
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:first_project/authentication/LogIn.dart';
-import 'package:first_project/global.dart';
 import 'package:first_project/toDo.dart';
 import 'package:flutter/material.dart';
 
@@ -16,17 +11,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final todoChecked = todo.doc('isChecked');
-  void checkStatus(newValue) {
-    setState(() {
-      todoChecked.update({"isChecked": newValue});
-    });
-  }
-
   Checkbox checktodo(data, index) {
     return Checkbox(
-        value: newToDo.isChecked,
-        onChanged: (newValue) => checkStatus(newValue));
+        value: data.docs[index]['isChecked'],
+        onChanged: (newValue) =>   data.docs[index].reference.update({'isChecked': newValue}));
   }
 
   @override
@@ -38,19 +26,19 @@ class _HomeState extends State<Home> {
       ),
       drawer: Drawer(
         child: Column(children: [
-          DrawerHeader(child: Text('To-Do scheduling app')),
+          const DrawerHeader(child: Text('To-Do scheduling app')),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: ElevatedButton(
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
                 },
-                child: Text('Sign-out')),
+                child: const Text('Sign-out')),
           )
         ]),
       ),
       body: Container(
-        padding: EdgeInsets.all(6),
+        padding: const EdgeInsets.all(6),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: StreamBuilder<QuerySnapshot>(
@@ -60,42 +48,62 @@ class _HomeState extends State<Home> {
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               final data = snapshot.requireData;
-              return ListView.builder(
-                itemCount: data.size,
-                itemBuilder: (context, index) {
-                  return Card(
-                      elevation: 3.00,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      key: Key(data.docs[index]['task']),
-                      child: ListTile(
-                        leading: checktodo(data, index),
-                        title: Text(
-                          data.docs[index]['task'],
-                          style: TextStyle(
-                              decoration: todoChecked == true
-                                  ? TextDecoration.lineThrough
-                                  : null),
-                        ),
-                      ));
-                },
-              );
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: data.size,
+                    itemBuilder: (context, index) {
+                      return Card(
+                          elevation: 3.00,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          key: Key(data.docs[index]['task']),
+                          child: ListTile(
+                            leading: checktodo(data, index),
+                            title: Text(
+                              data.docs[index]['task'],
+                              style: TextStyle(
+                                  decoration: newToDo.isChecked == true
+                                      ? TextDecoration.lineThrough
+                                      : null),
+                            ),
+                            trailing: InkWell(
+                                child: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                onTap: () {
+                                  FirebaseFirestore.instance.runTransaction(
+                                      (Transaction myTransaction) async {
+                                    myTransaction
+                                        .delete(data.docs[index].reference);
+                                  });
+                                }),
+                          ));
+                    },
+                  );
+                } else {
+                  return const Text('No todos as of now');
+                }
+              }
             }),
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(8.0),
         child: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           onPressed: () {
             showDialog(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
-                      title: Text("Your To-Do's name"),
+                      title: const Text("Your To-Do's name"),
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           TextField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 hintText: "Enter your To-Do's name"),
                             onChanged: (value) => newToDo.task = value,
                             autofocus: true,
@@ -117,7 +125,6 @@ class _HomeState extends State<Home> {
                       ],
                     ));
           },
-          tooltip: 'Add a To-Do',
         ),
       ),
     );

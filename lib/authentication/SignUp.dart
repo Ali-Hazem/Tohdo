@@ -1,10 +1,7 @@
-// ignore_for_file: prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables;, deprecated_member_use, unused_local_variable, empty_catches, empty_statements, unused_import, unused_import, duplicate_ignore, unused_field
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_project/todoSection/Home.dart';
 import 'package:flutter/gestures.dart';
-// import 'package:first_project/authentication/signUp.dart';
 import 'package:flutter/material.dart';
-import 'SignUp.dart';
+import '../global.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key, required this.onClickedSignIn}) : super(key: key);
@@ -17,7 +14,6 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final GlobalKey<FormState> _key = GlobalKey<FormState>();
   // User? user = FirebaseAuth.instance.currentUser;
   String? errorMessage = '';
   @override
@@ -31,9 +27,8 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: const Text('Sign Up'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -42,7 +37,10 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 86),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: appLogo,
+              ),
               TextFormField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -66,7 +64,7 @@ class _SignUpState extends State<SignUp> {
                 height: 19,
                 child: Text(
                   errorMessage!,
-                  style: TextStyle(color: Colors.red),
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
               Padding(
@@ -74,7 +72,8 @@ class _SignUpState extends State<SignUp> {
                 child: RichText(
                     text: TextSpan(
                         text: 'Have an account?  ',
-                        style: TextStyle(fontSize: 17, color: Colors.white),
+                        style:
+                            const TextStyle(fontSize: 17, color: Colors.black),
                         children: [
                       TextSpan(
                           recognizer: TapGestureRecognizer()
@@ -88,9 +87,9 @@ class _SignUpState extends State<SignUp> {
                               color: Colors.blueGrey[800])),
                     ])),
               ),
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 15),
+                margin: const EdgeInsets.symmetric(vertical: 15),
                 child: ElevatedButton(
                     onPressed: () async {
                       try {
@@ -101,16 +100,12 @@ class _SignUpState extends State<SignUp> {
                       } on FirebaseAuthException catch (e) {
                         errorMessage = e.message;
                       }
-                      ;
                       setState(() {});
                     },
                     child: const Text(
-                      'Sign In',
+                      'Sign Up',
                       style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 50),
-                        primary: Colors.blueGrey[800])),
+                    )),
               ),
             ],
           ),

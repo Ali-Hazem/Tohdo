@@ -1,11 +1,7 @@
-// ignore_for_file: prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables;, deprecated_member_use, unused_local_variable, empty_catches, empty_statements, unused_import, unused_import, duplicate_ignore, unused_field
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_project/global.dart';
-import 'package:first_project/todoSection/Home.dart';
 import 'package:flutter/gestures.dart';
-// import 'package:first_project/authentication/signUp.dart';
 import 'package:flutter/material.dart';
-import 'SignUp.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({Key? key, required this.onClickedSignUp}) : super(key: key);
@@ -18,7 +14,6 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final GlobalKey<FormState> _key = GlobalKey<FormState>();
   String? errorMessage = '';
   @override
   void dispose() {
@@ -31,9 +26,8 @@ class _LogInState extends State<LogIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
       appBar: AppBar(
-        title: Text('Sign In'),
+        title: const Text('Sign In'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -42,10 +36,9 @@ class _LogInState extends State<LogIn> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(padding: EdgeInsets.symmetric(vertical: 20), child: flutterLogo,),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: authPageText,
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: appLogo,
               ),
               TextFormField(
                 decoration: InputDecoration(
@@ -70,7 +63,7 @@ class _LogInState extends State<LogIn> {
                 height: 19,
                 child: Text(
                   errorMessage!,
-                  style: TextStyle(color: Colors.red),
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
               Padding(
@@ -78,7 +71,7 @@ class _LogInState extends State<LogIn> {
                 child: RichText(
                     text: TextSpan(
                         text: 'No account?  ',
-                        style: TextStyle(fontSize: 17, color: Colors.white),
+                        style: const TextStyle(fontSize: 17, color: Colors.black),
                         children: [
                       TextSpan(
                           recognizer: TapGestureRecognizer()
@@ -93,9 +86,9 @@ class _LogInState extends State<LogIn> {
                               color: Colors.blueGrey[800])),
                     ])),
               ),
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 15),
+                margin: const EdgeInsets.symmetric(vertical: 15),
                 child: ElevatedButton(
                     onPressed: () async {
                       try {
@@ -105,16 +98,12 @@ class _LogInState extends State<LogIn> {
                       } on FirebaseAuthException catch (e) {
                         errorMessage = e.message;
                       }
-                      ;
                       setState(() {});
                     },
                     child: const Text(
                       'Sign In',
                       style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 50),
-                        primary: Colors.blueGrey[800])),
+                    )),
               ),
             ],
           ),
