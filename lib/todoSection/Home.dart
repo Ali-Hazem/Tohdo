@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_project/toDo.dart';
+import 'package:first_project/global.dart';
+import 'package:first_project/todoSection/toDo.dart';
+import 'package:first_project/todoSection/todoCard.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -11,10 +13,44 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final TextEditingController taskController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  final Map<String, List<String>> todoDate = {
+    'today': ['code', 'read a book'],
+    //newtodo.date
+  };
+
   Checkbox checktodo(data, index) {
     return Checkbox(
         value: data.docs[index]['isChecked'],
-        onChanged: (newValue) =>   data.docs[index].reference.update({'isChecked': newValue}));
+        onChanged: (newValue) =>
+            data.docs[index].reference.update({'isChecked': newValue}));
+  }
+
+  Widget tile(String date) {
+    return InkWell(
+      child: SizedBox(
+        height: 40,
+        child: ListTile(
+          title: Text(
+            date,
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
+      ),
+      onTap: (() {
+        setState(() {
+          dateController.text = date;
+        });
+      }),
+    );
+  }
+
+  @override
+  void dispose() {
+    taskController.dispose();
+    taskController.clear();
+    super.dispose();
   }
 
   @override
@@ -38,7 +74,7 @@ class _HomeState extends State<Home> {
         ]),
       ),
       body: Container(
-        padding: const EdgeInsets.all(6),
+        padding: const EdgeInsets.all(12),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: StreamBuilder<QuerySnapshot>(
@@ -55,33 +91,17 @@ class _HomeState extends State<Home> {
                   return ListView.builder(
                     itemCount: data.size,
                     itemBuilder: (context, index) {
-                      return Card(
-                          elevation: 3.00,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          key: Key(data.docs[index]['task']),
-                          child: ListTile(
-                            leading: checktodo(data, index),
-                            title: Text(
-                              data.docs[index]['task'],
-                              style: TextStyle(
-                                  decoration: newToDo.isChecked == true
-                                      ? TextDecoration.lineThrough
-                                      : null),
-                            ),
-                            trailing: InkWell(
-                                child: const Icon(
-                                  Icons.delete,
-                                  color: Colors.red,
-                                ),
-                                onTap: () {
-                                  FirebaseFirestore.instance.runTransaction(
-                                      (Transaction myTransaction) async {
-                                    myTransaction
-                                        .delete(data.docs[index].reference);
-                                  });
-                                }),
-                          ));
+                      final String todoKey = todoDate.keys.firstWhere(
+                          (k) => todoDate[k] == newToDo.task,
+                          orElse: () => 'Error');
+                      // return TodoCard(data, index, checktodo, context);
+                      for (var key in todoDate.keys) {
+                        for (var value in todoDate.values) {
+                          return TodoCard(data, index, checktodo, context, todoDate);
+                        } return Text(key);
+                      }
+                      return const Text('');
+
                     },
                   );
                 } else {
@@ -90,23 +110,54 @@ class _HomeState extends State<Home> {
               }
             }),
       ),
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(8.0),
         child: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
+            const String today = 'Today';
+            const String week = 'This Week';
+            const String month = 'This Month';
             showDialog(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
                       title: const Text("Your To-Do's name"),
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TextField(
-                            decoration: const InputDecoration(
-                                hintText: "Enter your To-Do's name"),
-                            onChanged: (value) => newToDo.task = value,
-                            autofocus: true,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 14),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                hintText: "Todo's name",
+                                hintStyle: hintStyle,
+                                border: InputBorder.none,
+                                filled: false,
+                              ),
+                              style: const TextStyle(fontSize: 22),
+                              onChanged: (value) => newToDo.task = value,
+                              autofocus: true,
+                              controller: taskController,
+                            ),
+                          ),
+                          const SizedBox(height: 20.0),
+                          ExpansionTile(
+                            title: TextField(
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                filled: false,
+                                hintText: "Todo's deadline",
+                                hintStyle: hintStyle,
+                              ),
+                              style: const TextStyle(fontSize: 18),
+                              controller: dateController,
+                              onChanged: (value) {
+                                newToDo.date = value;
+                              },
+                            ),
+                            children: [tile(today), tile(week), tile(month)],
                           ),
                         ],
                       ),
@@ -117,9 +168,23 @@ class _HomeState extends State<Home> {
                                   color: Colors.blueGrey[800],
                                   fontWeight: FontWeight.w900,
                                   fontSize: 18)),
-                          onPressed: () {
-                            addtodo();
-                            Navigator.pop(context);
+                          onPressed: () async {
+                            //add data to firebase;
+                            if (newToDo.task.isNotEmpty && newToDo.task != '') {
+                              await todo.add({
+                                'task': newToDo.task,
+                                'subTask': newToDo.subTask,
+                                'createdTime': newToDo.date,
+                                'isChecked': newToDo.isChecked,
+                              });
+                              //
+                              todoDate[newToDo.date] = [newToDo.task];
+
+                              Navigator.pop(context);
+                              taskController.clear();
+                            } else {
+                              return;
+                            }
                           },
                         )
                       ],

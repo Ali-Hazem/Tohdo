@@ -1,4 +1,4 @@
-#Sun Jul 24 08:52:43 AST 2022
+#Sat Jul 30 13:54:21 AST 2022
 base.2=D\:\\flurrer\\first_project\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes3.dex
 path.2=classes3.dex
 base.1=D\:\\flurrer\\first_project\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex

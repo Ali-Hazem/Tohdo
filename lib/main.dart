@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
                   primary: Colors.blueGrey[800])),
+          primaryColorLight: Colors.blueGrey[800],
           floatingActionButtonTheme: FloatingActionButtonThemeData(
               backgroundColor: Colors.blueGrey[800])),
       home: StreamBuilder<User?>(
