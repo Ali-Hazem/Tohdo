@@ -59,11 +59,14 @@ class _LogInState extends State<LogIn> {
                 textInputAction: TextInputAction.next,
                 controller: _passwordController,
               ),
-              SizedBox(
-                height: 19,
-                child: Text(
-                  errorMessage!,
-                  style: const TextStyle(color: Colors.red),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: SizedBox(
+                  height: 36.0,
+                  child: Text(
+                    errorMessage!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
                 ),
               ),
               Padding(
@@ -71,7 +74,8 @@ class _LogInState extends State<LogIn> {
                 child: RichText(
                     text: TextSpan(
                         text: 'No account?  ',
-                        style: const TextStyle(fontSize: 17, color: Colors.black),
+                        style:
+                            const TextStyle(fontSize: 17, color: Colors.black),
                         children: [
                       TextSpan(
                           recognizer: TapGestureRecognizer()
@@ -86,7 +90,7 @@ class _LogInState extends State<LogIn> {
                               color: Colors.blueGrey[800])),
                     ])),
               ),
-              const SizedBox(height: 25),
+              const SizedBox(height: 20),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 15),
                 child: ElevatedButton(

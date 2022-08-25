@@ -1,20 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:first_project/todoSection/toDo.dart';
-import 'package:first_project/todoSection/Home.dart';
 
-Card TodoCard(data, index, checktodo, context, todoDate) {
+Card TodoCard(
+  QuerySnapshot<Object?> data,
+  int index,
+  context,
+  todoDate,
+  todo,
+  List<String> todos
+) {
   return Card(
       elevation: 3.00,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       key: Key(data.docs[index]['task']),
       child: ExpansionTile(
           leading: checktodo(data, index),
-          title: Text(
-            // data.docs[index]['task'],
-            todoDate[newToDo.date]![newToDo.task],
-            style: TextStyle(
-                decoration: newToDo.isChecked == true
+          title: Text(todo
+            ,style: TextStyle(
+                decoration: data.docs[index]['isChecked'] == true
                     ? TextDecoration.lineThrough
                     : null,
                 fontSize: 22),
@@ -22,11 +25,13 @@ Card TodoCard(data, index, checktodo, context, todoDate) {
           children: [
             ListTile(
               title: Row(
-                mainAxisSize: MainAxisSize.min,
+                // mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    'Add a reminder',
-                    style: TextStyle(fontSize: 18),
+                  const TextField(
+                    decoration: InputDecoration(
+                        hintText: 'Add a sub-task',
+                        constraints:
+                            BoxConstraints(maxHeight: 100, maxWidth: 160)),
                   ),
                   InkResponse(
                     child: const Padding(
@@ -46,11 +51,26 @@ Card TodoCard(data, index, checktodo, context, todoDate) {
                     size: 30,
                   ),
                   onTap: () {
+                    //delete from firebase
                     FirebaseFirestore.instance
                         .runTransaction((Transaction myTransaction) async {
                       myTransaction.delete(data.docs[index].reference);
                     });
+                    //delete from todos
+                    
+                    // todos.remove(todo);
+
                   }),
             ),
           ]));
+}
+
+Widget checktodo(data, index) {
+  return Padding(
+    padding: const EdgeInsets.all(3),
+    child: Checkbox(
+        value: data.docs[index]['isChecked'],
+        onChanged: (newValue) =>
+            data.docs[index].reference.update({'isChecked': newValue})),
+  );
 }
