@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:first_project/todoSection/Home.dart';
 import 'package:first_project/authentication/auth.dart';
 import 'package:provider/provider.dart';
-
-import 'todoSection/models/tabs.dart';
-import 'todoSection/models/toDo.dart';
-import 'todoSection/models/todoCardTitle.dart';
-import 'todoSection/models/views.dart';
+import 'models/tabs.dart';
+import 'models/todo.dart';
+import 'models/views.dart';
+import 'models/todoCardTitle.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +15,7 @@ Future<void> main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<Tabs>(create: (_) => Tabs()),
         ChangeNotifierProvider<Views>(create: (_) => Views()),
-        ChangeNotifierProvider<ToDo>(create: (_) => ToDo()),
+        ChangeNotifierProvider<Todo>(create: (_) => Todo()),
         ChangeNotifierProvider<TodoCardTitle>(create: (_) => TodoCardTitle())
   ],
   child: const MyApp()));
