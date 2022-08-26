@@ -8,8 +8,7 @@ Future<void> todoDialog(
     {required BuildContext context,
     dateController,
     taskController,
-    required InkWell Function({String? date}) tile,
-    todoDate,
+    required Widget Function({String? date}) tile,
     List<Widget>? tabs,
     List<Widget>? views,
     newTodo}) {

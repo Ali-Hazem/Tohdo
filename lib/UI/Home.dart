@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_project/UI/todo_dialog.dart';
 import 'package:first_project/global.dart';
 import 'package:first_project/models/toDo.dart';
-import 'floatingActionButton.dart';
 import 'package:flutter/material.dart';
 import '/models/tabs.dart';
 import 'package:first_project/models/views.dart';
@@ -24,10 +23,11 @@ class _HomeState extends State<Home> {
   var todoDate = <String, dynamic>{};
   final tabs = Tabs().tabs;
   final views = Views().views;
+  
 
   @override
   void initState() {
-    firstLoadTabs(context).then((_) => print(Tabs().tabs));
+    firstLoadFirebase();
     super.initState();
   }
 
@@ -86,58 +86,50 @@ class _HomeState extends State<Home> {
                       tile: tile,
                       dateController: dateController,
                       taskController: taskController,
-                      todoDate: todoDate,
                       tabs: tabs,
                       views: views,
                       newTodo: newTodo,
                     );
-                  })
-              ),
+                  })),
         ));
   }
 
-  InkWell tile({String? date}) {
-    return InkWell(
-      child: SizedBox(
-        height: 40,
-        child: ListTile(
-          title: Text(
-            date ?? 'Null',
-            style: const TextStyle(fontSize: 16),
-          ),
+  Widget tile({String? date}) {
+    return SizedBox(
+      height: 40,
+      child: ListTile(
+        title: Text(
+          date ?? 'Null',
+          style: const TextStyle(fontSize: 16),
         ),
+        onTap: (() {
+          if (date != null) {
+            setState(() {
+              dateController.text = date;
+            });
+          }
+        }),
       ),
-      onTap: (() {
-        if (date != null) {
-          setState(() {
-            dateController.text = date;
-          });
-        }
-      }),
     );
   }
-}
 
-Future<void> firstLoadFirebase({required BuildContext context}) async {
-  QuerySnapshot<Map<String, dynamic>> query = await todosRef.get();
-  if (query.docs.toList().isEmpty) {
-    await todosRef.add({
-      'todo': newTodo.todo,
-      'subTask': newTodo.subTask,
-      'isChecked': newTodo.isChecked,
+Future firstLoadFirebase() async {
+  try{
+  QuerySnapshot<Map<String, dynamic>> query = await todosRef.limit(1).get(const GetOptions(source: Source.server));
+
+  if (query.docs.isEmpty) {
+    Map<String, dynamic> todayDoc = {
+      'todo': null,
+      'subTask': null,
+      'isChecked': null,
       'date': 'Today'
-    }).then((doc) => newTodo.id = doc.id);
-    ;
+    };
+    await todosRef.add(todayDoc);
+    context.read<Tabs>().addTabs(todayDoc['date']);
+    context.read<Views>().addView(Container());
+    print(tabs);
+    print(views);
+  } } on FirebaseException catch (e){
+    throw Exception();
   }
-}
-
-// .then((doc) {
-//         newToDo.id = doc.id;
-//         // getDate(context, query, doc);
-//         doc.get().then((Doc) {
-//           context.read<Tabs>().addTabs(Doc['date']);
-//           context.read<Views>().addView(Container(
-//                 color: Colors.white,
-//               ));
-//         });
-//       });
+}}

@@ -12,21 +12,26 @@ import 'models/todoCardTitle.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MultiProvider(providers: [
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(providers: [
     ChangeNotifierProvider<Tabs>(create: (_) => Tabs()),
         ChangeNotifierProvider<Views>(create: (_) => Views()),
         ChangeNotifierProvider<Todo>(create: (_) => Todo()),
         ChangeNotifierProvider<TodoCardTitle>(create: (_) => TodoCardTitle())
   ],
-  child: const MyApp()));
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  child: MaterialApp(
       title: 'Todo-App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -47,6 +52,6 @@ class MyApp extends StatelessWidget {
               return const Auth();
             }
           }),
-    );
+    ));
   }
 }
